@@ -32,6 +32,7 @@ let resetCookies= (req,res)=>{
   res.setHeader('Set-Cookie',`sessionid=0,Expires=${new Date(1).toUTCString()}`);
 }
 
+
 let loadUser = (req,res)=>{
   let sessionid = req.cookies.sessionid;
   let user = registered_users.find(u=>u.sessionid==sessionid);
@@ -60,7 +61,7 @@ app.use(resetCookies);
 app.use(redirectToIndexPage);
 app.use(serveFileContent);
 app.post("/submit",(req,res)=>{
-  let user = registered_users.find(u=>u.userName==req.body.userName);
+  let user = registered_users.find(u=>u.userName==req.body.USERNAME);
   if(!user) {
     res.setHeader('Set-Cookie',`logInFailed=true`);
     res.redirect('./login.html');
@@ -73,10 +74,10 @@ app.post("/submit",(req,res)=>{
   res.redirect('./guestbook.html');
 })
 
-app.post("/login.html",(req,res)=>{
+app.post("/login",(req,res)=>{
   let user = registered_users.find(u=>u.userName==req.body.userName);
   if(!user) {
-    res.setHeader('Set-Cookie',`logInFailed=false`);
+    res.setHeader('Set-Cookie',`logInFailed=true`);
     res.redirect('./login.html');
     return;
   }

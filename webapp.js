@@ -49,7 +49,6 @@ let urlIsOneOf = function(urls){
   return urls.includes(this.url);
 }
 const main = function(req,res){
-  console.log(req.headers);
   res.redirect = redirect.bind(res);
   req.urlIsOneOf = urlIsOneOf.bind(req);
   req.cookies = parseCookies(req.headers.cookie||'');
