@@ -38,10 +38,12 @@ let loadUser = (req,res)=>{
 
 let serveFileContent= (req,res)=>{
   if(fs.existsSync("./public"+req.url)){
+    app.get(req.url,(req,res)=>{
       res.setHeader('Content-type',getContentType(req.url));
       contents=fs.readFileSync("./public"+req.url);
       res.write(contents);
       res.end();
+    })
   };
 }
 
@@ -86,21 +88,18 @@ app.use(loadUser);
 app.use(redirectToIndexPage);
 app.use(serveFileContent);
 app.post("/submit",(req,res)=>{
-  let user = registered_users.find(u=>u.userName==req.body.USERNAME);
-  if(!user) {
+  console.log(req.user);
+  let user = req.body.USERNAME;
+  if(!req.user) {
     res.setHeader('Set-Cookie',`logInFailed=true`);
     res.redirect('./login.html');
     return;
   }
-  let sessionid = new Date().getTime();
   let comment=getCommentDetails(req.body);
   addComment(comment);
-  fs.writeFileSync("./public/comments.html",getComments(),"utf8")
-  res.setHeader('Set-Cookie',`logInFailed=false`);
-  res.setHeader('Set-Cookie',`sessionid=${sessionid}`);
-  user.sessionid = sessionid;
+  fs.writeFileSync("./public/comments.html",getComments(),"utf8");
   res.redirect('./guestbook.html');
-})
+});
 
 app.post("/login",(req,res)=>{
   let user = registered_users.find(u=>u.userName==req.body.userName);
@@ -110,7 +109,7 @@ app.post("/login",(req,res)=>{
     return;
   }
   let sessionid = new Date().getTime();
-  res.setHeader('Set-Cookie',`logInFailed=false`);
+  res.setHeader('Set-Cookie',`logInFailed=true; Expires${new Date().toUTCString()}`);
   res.setHeader('Set-Cookie',`sessionid=${sessionid}`);
   user.sessionid = sessionid;
   res.redirect('./guestbook.html');
