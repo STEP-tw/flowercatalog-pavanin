@@ -1,0 +1,31 @@
+div.container{
+  width: 980px;
+  height: 980px;
+}
+h3{
+ color: orange;
+ text-align: right;
+}
+hr{
+  display: block;
+}
+
+div.image{
+  float: left;
+  position: relative;
+}
+
+div.links{
+  position:relative;
+  float: left;
+  text-align: left;
+}
+div.content{
+  float: left;
+  text-align: left;
+}
+
+a{
+  float: left;
+  text-align: left;
+}

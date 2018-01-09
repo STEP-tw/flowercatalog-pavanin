@@ -1,0 +1,21 @@
+div.container{
+  width: 980px;
+  height: 980px;
+}
+h2{
+ color: orange;
+}
+hr{
+  display: block;
+}
+div.image{
+  float: left;
+  position: relative;
+}
+div.data{
+  text-align: left;
+}
+div.content{
+  float: left;
+  text-align: left;
+}
