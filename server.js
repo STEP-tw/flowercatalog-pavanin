@@ -75,6 +75,7 @@ let addComment=(comment)=>{
   fs.writeFileSync("./dataBase/comments.json",commentsData,"utf8");
 };
 
+
 let getCommentDetails= function(data){
   let details={}
   details=data;
@@ -92,13 +93,21 @@ app.post("/submit",(req,res)=>{
   let user = req.body.USERNAME;
   if(!req.user) {
     res.setHeader('Set-Cookie',`logInFailed=true`);
-    res.redirect('./login.html');
+    res.redirect('./guestbook.html')
     return;
   }
   let comment=getCommentDetails(req.body);
   addComment(comment);
   fs.writeFileSync("./public/comments.html",getComments(),"utf8");
   res.redirect('./guestbook.html');
+});
+
+app.get("/logout",(req,res)=>{
+  res.setHeader('Set-Cookie',`logInFailed=false; Expires${new Date(1).toUTCString()}`);
+  res.setHeader('Set-Cookie',`sessionid=0; Expires${new Date(1).toUTCString()}`);
+  if(req.user)
+    delete req.user.sessionid;
+  res.redirect('./login.html');
 });
 
 app.post("/login",(req,res)=>{
@@ -109,7 +118,6 @@ app.post("/login",(req,res)=>{
     return;
   }
   let sessionid = new Date().getTime();
-  res.setHeader('Set-Cookie',`logInFailed=true; Expires${new Date().toUTCString()}`);
   res.setHeader('Set-Cookie',`sessionid=${sessionid}`);
   user.sessionid = sessionid;
   res.redirect('./guestbook.html');

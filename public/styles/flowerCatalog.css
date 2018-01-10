@@ -11,11 +11,13 @@ hr{
 }
 
 div.image{
+  width:auto;
   float: left;
   position: relative;
 }
 
 div.links{
+  width:auto;
   position:relative;
   float: left;
   text-align: left;
