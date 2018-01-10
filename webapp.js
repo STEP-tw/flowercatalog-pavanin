@@ -1,4 +1,3 @@
-const fs=require("fs");
 const toKeyValue = kv=>{
     let parts = kv.split('=');
     return {key:parts[0].trim(),value:parts[1].trim()};
